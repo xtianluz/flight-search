@@ -9,9 +9,14 @@ data class Airport(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
-
     @ColumnInfo(name = "iata_code")
     val iataCode: String,
-
     val passenger: Int
+)
+
+data class FlightPair(
+    val arrivalCode: String,
+    val arrivalName: String,
+    val departureName: String,
+    val departureCode: String,
 )

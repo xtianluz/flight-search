@@ -14,16 +14,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.flightsearch.R
 import com.example.flightsearch.data.Airport
+import com.example.flightsearch.data.LocalData
+import com.example.flightsearch.navigation.NavigationDestination
 import com.example.flightsearch.ui.theme.FlightSearchTheme
+
+object SearchDestination: NavigationDestination{
+    override val route = "search_screen"
+    override val titleRes = R.string.app_name
+}
 
 @Composable
 fun SearchScreen() {
+    Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        SearchTextField(
+            value = "",
+            onValueChange = {}
+        )
+        SearchResultList(airportList = LocalData.airportList)
+    }
 
 }
 
 @Composable
-fun SearchField(
+fun SearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
 ) {
@@ -48,16 +66,18 @@ fun SearchField(
 fun SearchResultList(
     airportList: List<Airport>
 ){
-    LazyColumn(){
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(9.dp)
+    ){
         items(
             items = airportList,
             key = {airportList -> airportList.id}
         ){item ->
-            Divider()
             SearchResult(
                 flightCode = item.iataCode,
                 flightName = item.name
             )
+            Divider()
         }
     }
 }
@@ -70,15 +90,20 @@ fun SearchResult(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp),
+            .padding(
+                start = 12.dp,
+                top = 3.dp,
+                end = 12.dp
+            ),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ){
         Text(
             modifier = Modifier
-                .weight(1f),
+                .weight(1f)
+                .padding(start = 6.dp),
             text = flightCode,
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Start,
             fontWeight = FontWeight.Bold
         )
         Text(
@@ -93,14 +118,14 @@ fun SearchResult(
 
 //////////////////////////
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = false)
 @Composable
 fun SearchFieldPreview(){
     FlightSearchTheme() {
         Column(
 
         ) {
-            SearchField(
+            SearchTextField(
                 value = "Placeholder",
                 onValueChange = {})
             SearchResult(
@@ -116,5 +141,13 @@ fun SearchFieldPreview(){
                 flightName = "Los Angeles"
             )
         }
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun DefaultPreview(){
+    FlightSearchTheme {
+        SearchScreen()
     }
 }
