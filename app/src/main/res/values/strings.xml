@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Flight Search</string>
+    <string name="back_button">Back</string>
+    <string name="depart">Depart</string>
+    <string name="arrive">Arrive</string>
+    <string name="favourite">Favourite</string>
 </resources>

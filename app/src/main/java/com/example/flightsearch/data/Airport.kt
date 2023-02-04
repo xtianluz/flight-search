@@ -14,7 +14,8 @@ data class Airport(
     val passenger: Int
 )
 
-data class FlightPair(
+
+data class Flights(
     val arrivalCode: String,
     val arrivalName: String,
     val departureName: String,
