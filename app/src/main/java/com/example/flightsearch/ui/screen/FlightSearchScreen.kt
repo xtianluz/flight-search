@@ -1,5 +1,6 @@
 package com.example.flightsearch.ui.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,7 +27,9 @@ object SearchDestination: NavigationDestination{
 }
 
 @Composable
-fun SearchScreen() {
+fun SearchScreen(
+    navigateToFlightDetails: (Airport) -> Unit = {}
+) {
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -35,7 +38,10 @@ fun SearchScreen() {
             value = "",
             onValueChange = {}
         )
-        SearchResultList(airportList = LocalData.airportList)
+        SearchResultList(
+            airportList = LocalData.airportList,
+            onItemClick = navigateToFlightDetails
+        )
     }
 
 }
@@ -64,7 +70,8 @@ fun SearchTextField(
 
 @Composable
 fun SearchResultList(
-    airportList: List<Airport>
+    airportList: List<Airport>,
+    onItemClick: (Airport) -> Unit
 ){
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(9.dp)
@@ -74,8 +81,8 @@ fun SearchResultList(
             key = {airportList -> airportList.id}
         ){item ->
             SearchResult(
-                flightCode = item.iataCode,
-                flightName = item.name
+                airport = item,
+                onItemClick = onItemClick
             )
             Divider()
         }
@@ -84,12 +91,15 @@ fun SearchResultList(
 
 @Composable
 fun SearchResult(
-    flightCode: String,
-    flightName: String
+    airport: Airport,
+//    flightCode: String,
+//    flightName: String,
+    onItemClick: (Airport) -> Unit
 ){
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onItemClick(airport)}
             .padding(
                 start = 12.dp,
                 top = 3.dp,
@@ -102,14 +112,14 @@ fun SearchResult(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 6.dp),
-            text = flightCode,
+            text = airport.iataCode,
             textAlign = TextAlign.Start,
             fontWeight = FontWeight.Bold
         )
         Text(
             modifier = Modifier
                 .weight(5f),
-            text = flightName,
+            text = airport.name,
             maxLines = 1
         )
     }
@@ -125,21 +135,21 @@ fun SearchFieldPreview(){
         Column(
 
         ) {
-            SearchTextField(
-                value = "Placeholder",
-                onValueChange = {})
-            SearchResult(
-                flightCode = "FCO",
-                flightName = "Sheremetyevo - A.S. Pushkin international airport"
-            )
-            SearchResult(
-                flightCode = "FCO",
-                flightName = "Los Angeles"
-            )
-            SearchResult(
-                flightCode = "FCO",
-                flightName = "Los Angeles"
-            )
+//            SearchTextField(
+//                value = "Placeholder",
+//                onValueChange = {})
+//            SearchResult(
+//                flightCode = "FCO",
+//                flightName = "Sheremetyevo - A.S. Pushkin international airport"
+//            )
+//            SearchResult(
+//                flightCode = "FCO",
+//                flightName = "Los Angeles"
+//            )
+//            SearchResult(
+//                flightCode = "FCO",
+//                flightName = "Los Angeles"
+//            )
         }
     }
 }
@@ -148,6 +158,6 @@ fun SearchFieldPreview(){
 @Composable
 fun DefaultPreview(){
     FlightSearchTheme {
-        SearchScreen()
+//        SearchScreen()
     }
 }

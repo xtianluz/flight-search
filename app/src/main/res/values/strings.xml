@@ -4,4 +4,5 @@
     <string name="depart">Depart</string>
     <string name="arrive">Arrive</string>
     <string name="favourite">Favourite</string>
+    <string name="flight_details">Flight Details</string>
 </resources>

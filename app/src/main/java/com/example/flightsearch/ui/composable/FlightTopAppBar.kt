@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.flightsearch.R
 
 @Composable
-fun TopAppBar(
+fun FlightTopAppBar(
     title: String,
     canNavigateBack: Boolean,
     modifier: Modifier = Modifier,

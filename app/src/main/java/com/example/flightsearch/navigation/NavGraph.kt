@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.flightsearch.ui.screen.FlightDetailDestination
+import com.example.flightsearch.ui.screen.FlightDetailsScreen
 import com.example.flightsearch.ui.screen.SearchDestination
 import com.example.flightsearch.ui.screen.SearchScreen
 
@@ -21,7 +23,14 @@ fun FlightNavHost(
         startDestination = SearchDestination.route,
     ){
         composable(route = SearchDestination.route){
-            SearchScreen()
+            SearchScreen(
+                navigateToFlightDetails = {navController.navigate(FlightDetailDestination.route)}
+            )
+        }
+        composable(route = FlightDetailDestination.route){
+            FlightDetailsScreen(
+                onNavigateUp = { navController.navigateUp() }
+            )
         }
     }
 }

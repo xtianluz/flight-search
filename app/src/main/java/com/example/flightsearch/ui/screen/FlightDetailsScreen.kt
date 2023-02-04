@@ -1,10 +1,9 @@
 package com.example.flightsearch.ui.screen
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
@@ -20,16 +19,49 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.flightsearch.R
 import com.example.flightsearch.data.Flights
+import com.example.flightsearch.data.LocalData
+import com.example.flightsearch.navigation.NavigationDestination
+import com.example.flightsearch.ui.composable.FlightTopAppBar
 import com.example.flightsearch.ui.theme.FlightSearchTheme
 
-@Composable
-fun FlightDetails() {
-
+object FlightDetailDestination: NavigationDestination{
+    override val route = "flight_details"
+    override val titleRes = R.string.flight_details
 }
 
 @Composable
-fun FlightPairsList() {
+fun FlightDetailsScreen(
+    onNavigateUp: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+            FlightTopAppBar(
+                title = stringResource(FlightDetailDestination.titleRes),
+                canNavigateBack = true,
+                navigateUp = onNavigateUp
+            )
+        }
+    ){ innerPadding ->
+        FlightPairList(
+            modifier = Modifier.padding(innerPadding)
+        )
 
+    }
+}
+
+@Composable
+fun FlightPairList(
+    flightList: List<Flights> = LocalData.flightList,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(9.dp)
+    ){
+        items(flightList){ item ->
+            FlightPair(flights = item)
+            Divider(modifier = Modifier.padding(top = 9.dp))
+        }
+    }
 }
 
 @Composable
@@ -82,6 +114,7 @@ fun Flight(
             .fillMaxWidth()
             .padding(
                 start = 12.dp,
+                top = 6.dp
             )
     ) {
         Column(
@@ -91,15 +124,15 @@ fun Flight(
             
         ) {
             Text(
-                modifier = Modifier,
-//                    .fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 text = stringResource(flightLabel),
                 textAlign = TextAlign.Center,
                 fontSize = 12.sp
             )
             Text(
-                modifier = Modifier,
-//                    .fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 text = flightCode,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -126,14 +159,15 @@ fun Flight(
 )
 @Composable
 fun FlightDetailsPreview() {
-    FlightSearchTheme() {
-        FlightPair(
-            flights = Flights(
-                departureCode = "FCO",
-                departureName = "Los Angeles",
-                arrivalCode = "MAD",
-                arrivalName = "Arnold"
-            )
-        )
+    FlightSearchTheme {
+//        FlightPair(
+//            flights = Flights(
+//                departureCode = "FCO",
+//                departureName = "Los Angeles",
+//                arrivalCode = "MAD",
+//                arrivalName = "Arnold"
+//            )
+//        )
+        FlightPairList()
     }
 }
