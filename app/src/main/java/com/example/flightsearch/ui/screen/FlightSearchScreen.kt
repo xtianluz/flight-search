@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.flightsearch.R
 import com.example.flightsearch.data.Airport
+import com.example.flightsearch.data.Favourites
 import com.example.flightsearch.data.LocalData
 import com.example.flightsearch.navigation.NavigationDestination
 import com.example.flightsearch.ui.theme.FlightSearchTheme
@@ -43,7 +44,6 @@ fun SearchScreen(
             onItemClick = navigateToFlightDetails
         )
     }
-
 }
 
 @Composable
@@ -92,8 +92,6 @@ fun SearchResultList(
 @Composable
 fun SearchResult(
     airport: Airport,
-//    flightCode: String,
-//    flightName: String,
     onItemClick: (Airport) -> Unit
 ){
     Row(
@@ -123,6 +121,15 @@ fun SearchResult(
             maxLines = 1
         )
     }
+}
+
+@Composable
+fun Favourites(
+    favourites: List<Favourites>
+){
+
+
+
 }
 
 

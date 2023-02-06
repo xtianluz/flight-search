@@ -21,3 +21,8 @@ data class Flights(
     val departureName: String,
     val departureCode: String,
 )
+
+data class Favourites(
+    val departureCode: String,
+    val arrivalCode: String,
+)
