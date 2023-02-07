@@ -115,7 +115,7 @@ fun SearchResult(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 6.dp),
-            text = airport.iata_code,
+            text = airport.iataCode,
             textAlign = TextAlign.Start,
             fontWeight = FontWeight.Bold
         )
