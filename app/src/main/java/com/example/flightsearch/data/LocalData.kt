@@ -5,26 +5,26 @@ object LocalData{
         Airport(
             id = 1,
             name = "Sheremetyevo - A.S. Pushkin international airport",
-            iataCode = "SVO",
-            passenger = 3
+            iata_code = "SVO",
+            passengers = 3
         ),
         Airport(
             id = 2,
             name = "Vienna International Airport",
-            iataCode = "VIE",
-            passenger = 6
+            iata_code = "VIE",
+            passengers = 6
         ),
         Airport(
-            id = 3,
+            id = 5,
             name = "Adolfo Suárez Madrid–Barajas Airport",
-            iataCode = "MAD",
-            passenger = 6
+            iata_code = "MAD",
+            passengers = 6
         ),
         Airport(
             id = 4,
             name = "Leonardo da Vinci International Airport",
-            iataCode = "FCO",
-            passenger = 6
+            iata_code = "FCO",
+            passengers = 6
         ),
     )
 
@@ -33,25 +33,29 @@ object LocalData{
             arrivalCode = "SVO",
             arrivalName = "Arrival 1",
             departureCode = "FCO",
-            departureName = "Leonardo"
+            departureName = "Leonardo",
+            id = 1
         ),
         Flights(
             arrivalCode = "MAD",
             arrivalName = "Arrival 2",
             departureCode = "FCO",
-            departureName = "Leonardo"
+            departureName = "Leonardo",
+            id = 2
         ),
         Flights(
             arrivalCode = "TES",
             arrivalName = "Arrival 3",
             departureCode = "FCO",
-            departureName = "Leonardo"
+            departureName = "Leonardo",
+            id = 3
         ),
         Flights(
             arrivalCode = "LOC",
             arrivalName = "Arrival 4",
             departureCode = "FCO",
-            departureName = "Leonardo"
+            departureName = "Leonardo",
+            id = 4
         )
     )
 }

@@ -57,7 +57,10 @@ fun FlightPairList(
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(9.dp)
     ){
-        items(flightList){ item ->
+        items(
+            items = flightList,
+            key = {item -> item.id}
+            ){ item ->
             FlightPair(flights = item)
             Divider(modifier = Modifier.padding(top = 9.dp))
         }

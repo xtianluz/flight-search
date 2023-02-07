@@ -15,7 +15,7 @@ abstract class AirportDatabase: RoomDatabase() {
 
         fun getAirportDatabase(context: Context): AirportDatabase {
             return INSTANCE?: synchronized(this){
-                Room.databaseBuilder(context, AirportDatabase::class.java, "flight_search")
+                Room.databaseBuilder(context, AirportDatabase::class.java, "airport")
                     .createFromAsset("flight_search.db")
                     .fallbackToDestructiveMigration()
                     .build()

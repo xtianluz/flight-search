@@ -20,8 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.flightsearch.R
 import com.example.flightsearch.data.Airport
-import com.example.flightsearch.data.Favourites
-import com.example.flightsearch.data.LocalData
 import com.example.flightsearch.navigation.NavigationDestination
 import com.example.flightsearch.ui.AppViewModelProvider
 import com.example.flightsearch.ui.theme.FlightSearchTheme
@@ -36,7 +34,7 @@ fun SearchScreen(
     navigateToFlightDetails: (Airport) -> Unit = {},
     viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val allItems by viewModel.getAllItems().collectAsState(emptyList())
+    val allItems = viewModel.getAllItems().collectAsState(initial = emptyList())
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -47,7 +45,7 @@ fun SearchScreen(
             onValueChange = {}
         )
         SearchResultList(
-            airportList = allItems,
+            airportList = allItems.value,
             onItemClick = navigateToFlightDetails
         )
     }
@@ -117,7 +115,7 @@ fun SearchResult(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 6.dp),
-            text = airport.iataCode,
+            text = airport.iata_code,
             textAlign = TextAlign.Start,
             fontWeight = FontWeight.Bold
         )
@@ -132,7 +130,6 @@ fun SearchResult(
 
 @Composable
 fun Favourites(
-    favourites: List<Favourites>
 ){
 
 

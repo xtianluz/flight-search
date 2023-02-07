@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 class FlightSearchViewModel(
     private val flightSearchRepository: FlightSearchRepository
 ): ViewModel(){
-    val searchList = getAllItems()
+
 
 
     fun getAllItems(): Flow<List<Airport>> = flightSearchRepository.getAllItems()
