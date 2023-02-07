@@ -8,9 +8,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -36,16 +35,19 @@ fun SearchScreen(
 ) {
     val allItems = viewModel.getAllItems().collectAsState(initial = emptyList())
 
+    var userInput = rememberSaveable{ mutableStateOf("")}
+    val allSearchItems = viewModel.getAllSearch(userInput.toString()).collectAsState(initial = emptyList())
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SearchTextField(
-            value = "",
-            onValueChange = {}
+            value = viewModel.userInput,
+            onValueChange = {viewModel.updateUserInput(userInput.toString())}
         )
+
         SearchResultList(
-            airportList = allItems.value,
+            airportList = allSearchItems.value,
             onItemClick = navigateToFlightDetails
         )
     }
@@ -131,7 +133,6 @@ fun SearchResult(
 @Composable
 fun Favourites(
 ){
-
 
 
 }

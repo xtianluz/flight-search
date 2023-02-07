@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AirportDao {
-
     @Query(
         """
           SELECT *
