@@ -9,17 +9,21 @@ import androidx.compose.material.Divider
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.flightsearch.R
 import com.example.flightsearch.data.Airport
 import com.example.flightsearch.data.Favourites
 import com.example.flightsearch.data.LocalData
 import com.example.flightsearch.navigation.NavigationDestination
+import com.example.flightsearch.ui.AppViewModelProvider
 import com.example.flightsearch.ui.theme.FlightSearchTheme
 
 object SearchDestination: NavigationDestination{
@@ -29,8 +33,11 @@ object SearchDestination: NavigationDestination{
 
 @Composable
 fun SearchScreen(
-    navigateToFlightDetails: (Airport) -> Unit = {}
+    navigateToFlightDetails: (Airport) -> Unit = {},
+    viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val allItems by viewModel.getAllItems().collectAsState(emptyList())
+
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -40,7 +47,7 @@ fun SearchScreen(
             onValueChange = {}
         )
         SearchResultList(
-            airportList = LocalData.airportList,
+            airportList = allItems,
             onItemClick = navigateToFlightDetails
         )
     }
@@ -97,7 +104,7 @@ fun SearchResult(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onItemClick(airport)}
+            .clickable { onItemClick(airport) }
             .padding(
                 start = 12.dp,
                 top = 3.dp,
