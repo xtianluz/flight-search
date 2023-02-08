@@ -50,7 +50,8 @@ fun SearchScreen(
             )
             else -> SearchResultList(
                 airportList = LocalData.airportList,
-                onItemClick =navigateToFlightDetails)
+                onItemClick = navigateToFlightDetails
+            )
         }
     }
 }

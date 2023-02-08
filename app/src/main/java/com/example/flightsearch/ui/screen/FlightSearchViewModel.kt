@@ -22,7 +22,7 @@ class FlightSearchViewModel(
 
 ): ViewModel(){
 
-    private val itemId: Int = checkNotNull(savedStateHandle[FlightDetailDestination.itemIdArg])
+//    private val itemId: Int = checkNotNull(savedStateHandle[FlightDetailDestination.itemIdArg])
 
     var userInput: String by mutableStateOf("")
         private set
@@ -30,8 +30,7 @@ class FlightSearchViewModel(
     var uiState: UiState by mutableStateOf(UiState.DefaultState)
         private set
 
-    var flightList: List<Airport> by mutableStateOf(emptyList())
-        private set
+    private var flightList: List<Airport> by mutableStateOf(emptyList())
 
     private suspend fun getResult(){
         flightList = getAllItems()
