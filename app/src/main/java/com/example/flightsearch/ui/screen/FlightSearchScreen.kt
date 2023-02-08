@@ -8,20 +8,20 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.flightsearch.R
 import com.example.flightsearch.data.Airport
+import com.example.flightsearch.data.LocalData
 import com.example.flightsearch.navigation.NavigationDestination
 import com.example.flightsearch.ui.AppViewModelProvider
-import com.example.flightsearch.ui.theme.FlightSearchTheme
 
 object SearchDestination: NavigationDestination{
     override val route = "search_screen"
@@ -33,23 +33,25 @@ fun SearchScreen(
     navigateToFlightDetails: (Airport) -> Unit = {},
     viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val allItems = viewModel.getAllItems().collectAsState(initial = emptyList())
-
-    var userInput = rememberSaveable{ mutableStateOf("")}
-    val allSearchItems = viewModel.getAllSearch(userInput.toString()).collectAsState(initial = emptyList())
+    val uiState: UiState = viewModel.uiState
+//    val searchedItems by viewModel.getAllSearch().collectAsState(initial = emptyList())
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SearchTextField(
             value = viewModel.userInput,
-            onValueChange = {viewModel.updateUserInput(userInput.toString())}
+            onValueChange = {viewModel.updateUserInput(it)}
         )
-
-        SearchResultList(
-            airportList = allSearchItems.value,
-            onItemClick = navigateToFlightDetails
-        )
+        when(uiState){
+            is UiState.Result -> SearchResultList(
+                airportList = uiState.searchResult,
+                onItemClick = navigateToFlightDetails
+            )
+            else -> SearchResultList(
+                airportList = LocalData.airportList,
+                onItemClick =navigateToFlightDetails)
+        }
     }
 }
 
@@ -117,7 +119,7 @@ fun SearchResult(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 6.dp),
-            text = airport.iataCode,
+            text = airport.iata_code,
             textAlign = TextAlign.Start,
             fontWeight = FontWeight.Bold
         )
@@ -130,46 +132,6 @@ fun SearchResult(
     }
 }
 
-@Composable
-fun Favourites(
-){
 
 
-}
 
-
-//////////////////////////
-
-@Preview(showBackground = true, showSystemUi = false)
-@Composable
-fun SearchFieldPreview(){
-    FlightSearchTheme() {
-        Column(
-
-        ) {
-//            SearchTextField(
-//                value = "Placeholder",
-//                onValueChange = {})
-//            SearchResult(
-//                flightCode = "FCO",
-//                flightName = "Sheremetyevo - A.S. Pushkin international airport"
-//            )
-//            SearchResult(
-//                flightCode = "FCO",
-//                flightName = "Los Angeles"
-//            )
-//            SearchResult(
-//                flightCode = "FCO",
-//                flightName = "Los Angeles"
-//            )
-        }
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun DefaultPreview(){
-    FlightSearchTheme {
-//        SearchScreen()
-    }
-}

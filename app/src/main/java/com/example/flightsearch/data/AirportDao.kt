@@ -14,15 +14,11 @@ interface AirportDao {
           OR iata_code LIKE '%'|| :search ||'%'
           """
     )
-    fun getAllSearch(search: String): Flow<List<Airport>>
+    suspend fun getAllSearch(search: String): List<Airport>
 
-    @Query(
-        """
-            SELECT *
-            FROM airport
-            """
-    )
-    fun getAllItems(): Flow<List<Airport>>
+    @Query("SELECT * FROM airport")
+    suspend fun getAllItems(): List<Airport>
 
 }
 
+//'%'|| :search ||'%'

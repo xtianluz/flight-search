@@ -3,14 +3,14 @@ package com.example.flightsearch.data
 import kotlinx.coroutines.flow.Flow
 
 interface FlightSearchRepository {
-    fun getAllSearch(search: String): Flow<List<Airport>>
+    suspend fun getAllSearch(search: String): List<Airport>
 
-    fun getAllItems(): Flow<List<Airport>>
+    suspend fun getAllItems(): List<Airport>
 }
 
 class DefaultFlightSearchRepository(private val airportDao: AirportDao): FlightSearchRepository{
-    override fun getAllSearch(search: String): Flow<List<Airport>> = airportDao.getAllSearch(search)
+    override suspend fun getAllSearch(search: String): List<Airport> = airportDao.getAllSearch(search)
 
-    override fun getAllItems(): Flow<List<Airport>> = airportDao.getAllItems()
+    override suspend fun getAllItems(): List<Airport> = airportDao.getAllItems()
 
 }

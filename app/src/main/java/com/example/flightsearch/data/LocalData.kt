@@ -5,25 +5,25 @@ object LocalData{
         Airport(
             id = 1,
             name = "Sheremetyevo - A.S. Pushkin international airport",
-            iataCode = "SVO",
+            iata_code = "SVO",
             passengers = 3
         ),
         Airport(
             id = 2,
             name = "Vienna International Airport",
-            iataCode = "VIE",
+            iata_code = "VIE",
             passengers = 6
         ),
         Airport(
             id = 5,
             name = "Adolfo Suárez Madrid–Barajas Airport",
-            iataCode = "MAD",
+            iata_code = "MAD",
             passengers = 6
         ),
         Airport(
             id = 4,
             name = "Leonardo da Vinci International Airport",
-            iataCode = "FCO",
+            iata_code = "FCO",
             passengers = 6
         ),
     )
