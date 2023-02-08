@@ -1,6 +1,7 @@
 package com.example.flightsearch.ui.screen
 
 import androidx.compose.runtime.*
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.flightsearch.data.Airport
@@ -16,8 +17,12 @@ sealed interface UiState{
 }
 
 class FlightSearchViewModel(
-    private val flightSearchRepository: FlightSearchRepository
+    savedStateHandle: SavedStateHandle,
+    private val flightSearchRepository: FlightSearchRepository,
+
 ): ViewModel(){
+
+    private val itemId: Int = checkNotNull(savedStateHandle[FlightDetailDestination.itemIdArg])
 
     var userInput: String by mutableStateOf("")
         private set
@@ -25,30 +30,31 @@ class FlightSearchViewModel(
     var uiState: UiState by mutableStateOf(UiState.DefaultState)
         private set
 
-    init{
-        viewModelScope.launch{
-
-        }
-    }
+    var flightList: List<Airport> by mutableStateOf(emptyList())
+        private set
 
     private suspend fun getResult(){
-        val result = getAllItems()
-        uiState = UiState.Result(result)
+        flightList = getAllItems()
+        uiState = UiState.Result(flightList)
     }
 
     private suspend fun searchResult(){
-        val result = getAllSearch()
-        uiState = UiState.Result(result)
+        flightList = getAllSearch()
+        uiState = UiState.Result(flightList)
     }
     fun updateUserInput(newUserInput: String){
         userInput = newUserInput
-        viewModelScope.launch{
-            searchResult()
+        if(userInput.isNotBlank()){
+            viewModelScope.launch{
+                searchResult()
+            }
+        } else{
+            uiState = UiState.DefaultState
         }
-    }
-    suspend fun getAllItems(): List<Airport> = flightSearchRepository.getAllItems()
 
-    suspend fun getAllSearch(): List<Airport> = flightSearchRepository.getAllSearch(userInput)
+    }
+    private suspend fun getAllItems(): List<Airport> = flightSearchRepository.getAllItems()
+    private suspend fun getAllSearch(): List<Airport> = flightSearchRepository.getAllSearch(userInput)
 
 }
 

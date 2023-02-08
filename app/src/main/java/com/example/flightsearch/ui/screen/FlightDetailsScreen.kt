@@ -27,6 +27,8 @@ import com.example.flightsearch.ui.theme.FlightSearchTheme
 object FlightDetailDestination: NavigationDestination{
     override val route = "flight_details"
     override val titleRes = R.string.flight_details
+    const val itemIdArg = "itemId"
+    val routeWithArgs = "$route/${itemIdArg}"
 }
 
 @Composable

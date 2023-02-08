@@ -2,8 +2,10 @@ package com.example.flightsearch.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.flightsearch.ui.screen.FlightDetailDestination
 import com.example.flightsearch.ui.screen.FlightDetailsScreen
 import com.example.flightsearch.ui.screen.SearchDestination
@@ -24,10 +26,17 @@ fun FlightNavHost(
     ){
         composable(route = SearchDestination.route){
             SearchScreen(
-                navigateToFlightDetails = {navController.navigate(FlightDetailDestination.route)}
+                navigateToFlightDetails = {
+                    navController.navigate("${FlightDetailDestination.route}/$it")
+                }
             )
         }
-        composable(route = FlightDetailDestination.route){
+        composable(
+            route = FlightDetailDestination.routeWithArgs,
+            arguments = listOf(navArgument(FlightDetailDestination.itemIdArg){
+                type = NavType.IntType
+            })
+        ){
             FlightDetailsScreen(
                 onNavigateUp = { navController.navigateUp() }
             )
