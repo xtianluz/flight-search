@@ -18,7 +18,10 @@ interface AirportDao {
     @Query("SELECT * FROM airport")
     suspend fun getAllItems(): List<Airport>
     @Query("SELECT * from airport WHERE id = :id")
-     fun getItem(id: Int): Flow<Airport>
+    fun getItem(id: Int): Flow<Airport>
+
+    @Query("SELECT * FROM airport WHERE iata_code = :iata_code")
+    fun getCode(iata_code: String): Flow<Airport>
 
 }
 

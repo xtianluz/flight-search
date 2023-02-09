@@ -5,10 +5,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,22 +27,24 @@ import com.example.flightsearch.ui.AppViewModelProvider
 import com.example.flightsearch.ui.composable.FlightTopAppBar
 import com.example.flightsearch.ui.theme.FlightSearchTheme
 import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.launch
 
 object FlightDetailDestination: NavigationDestination{
     override val route = "flight_details"
     override val titleRes = R.string.flight_details
-    const val itemIdArg = "itemId"
-    val routeWithArgs = "$route/${itemIdArg}"
+    const val itemIdArg = "WAW"
+    val routeWithArgs = "${route}/${itemIdArg}"
 }
 
 @Composable
 fun FlightDetailsScreen(
+//    flightInfo: String = "destination",
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
     viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory),
+
 ) {
-//    val flightInfo by viewModel.getAnItem().collectAsState()
+//    val flightInfo = viewModel.getAnItem().collectAsState(emptyFlow<Airport>()).value
+    val flightInfo = viewModel.getCode().collectAsState(Airport(0,"","",0))
 
     Scaffold(
         topBar = {
@@ -62,10 +63,9 @@ fun FlightDetailsScreen(
 //            modifier = modifier.padding(innerPadding)
 //        )
         Text(
-            text = "empty",
+            text = flightInfo.value.toString(),
             modifier = modifier.padding(innerPadding)
         )
-
     }
 }
 

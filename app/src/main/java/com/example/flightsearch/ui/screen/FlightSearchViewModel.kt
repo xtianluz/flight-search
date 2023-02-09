@@ -22,7 +22,8 @@ class FlightSearchViewModel(
 
 ): ViewModel(){
 
-    private val itemId = savedStateHandle[FlightDetailDestination.itemIdArg] ?: 0
+//    private val itemId = savedStateHandle[FlightDetailDestination.itemIdArg] ?: 0
+    private val itemCode = savedStateHandle[FlightDetailDestination.itemIdArg] ?: "FCO"
 
     var userInput: String by mutableStateOf("")
         private set
@@ -57,8 +58,9 @@ class FlightSearchViewModel(
 
     private suspend fun getAllItems(): List<Airport> = flightSearchRepository.getAllItems()
     private suspend fun getAllSearch(): List<Airport> = flightSearchRepository.getAllSearch(userInput)
-    fun getAnItem(): Flow<Airport> = flightSearchRepository.getItem(itemId)
-
+//    fun getAnItem(): Flow<Airport> = flightSearchRepository.getItem(itemId)
+//    fun getCode(code: String): Flow<Airport> = flightSearchRepository.getCode(code)
+    fun getCode(): Flow<Airport> = flightSearchRepository.getCode(itemCode)
 }
 
 

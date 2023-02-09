@@ -30,7 +30,7 @@ object SearchDestination: NavigationDestination{
 
 @Composable
 fun SearchScreen(
-    navigateToFlightDetails: (Int) -> Unit,
+    navigateToFlightDetails: (String) -> Unit,
     viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState: UiState = viewModel.uiState
@@ -48,10 +48,7 @@ fun SearchScreen(
                 airportList = uiState.searchResult,
                 onItemClick = navigateToFlightDetails
             )
-            else -> SearchResultList(
-                airportList = LocalData.airportList,
-                onItemClick = navigateToFlightDetails
-            )
+            else -> Text("Empty")
         }
     }
 }
@@ -81,7 +78,7 @@ fun SearchTextField(
 @Composable
 fun SearchResultList(
     airportList: List<Airport>,
-    onItemClick: (Int) -> Unit
+    onItemClick: (String) -> Unit
 ){
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(9.dp)
@@ -92,7 +89,7 @@ fun SearchResultList(
         ){item ->
             SearchResult(
                 airport = item,
-                onItemClick = { onItemClick(it.id) }
+                onItemClick = { onItemClick(it.iata_code) }
             )
             Divider()
         }
@@ -102,10 +99,11 @@ fun SearchResultList(
 @Composable
 fun SearchResult(
     airport: Airport,
-    onItemClick: (Airport) -> Unit
+    onItemClick: (Airport) -> Unit,
+    modifier: Modifier = Modifier
 ){
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onItemClick(airport) }
             .padding(

@@ -6,7 +6,9 @@ interface FlightSearchRepository {
     suspend fun getAllSearch(search: String): List<Airport>
 
     suspend fun getAllItems(): List<Airport>
-     fun getItem(id: Int): Flow<Airport>
+    fun getItem(id: Int): Flow<Airport>
+
+    fun getCode(code: String): Flow<Airport>
 }
 
 class DefaultFlightSearchRepository(private val airportDao: AirportDao): FlightSearchRepository{
@@ -14,5 +16,7 @@ class DefaultFlightSearchRepository(private val airportDao: AirportDao): FlightS
 
     override suspend fun getAllItems(): List<Airport> = airportDao.getAllItems()
     override  fun getItem(id: Int): Flow<Airport> = airportDao.getItem(id)
+
+    override fun getCode(code: String): Flow<Airport> = airportDao.getCode(code)
 
 }
