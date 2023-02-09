@@ -19,24 +19,24 @@ interface NavigationDestination {
 @Composable
 fun FlightNavHost(
     navController: NavHostController
-){
+) {
     NavHost(
         navController = navController,
         startDestination = SearchDestination.route,
-    ){
-        composable(route = SearchDestination.route){
+    ) {
+        composable(route = SearchDestination.route) {
             SearchScreen(
-                navigateToFlightDetails = {
-                    navController.navigate("${FlightDetailDestination.route}/$it")
+                navigateToFlightDetails = { flightId ->
+                    navController.navigate("${FlightDetailDestination.route}/$flightId")
                 }
             )
         }
         composable(
             route = FlightDetailDestination.routeWithArgs,
-            arguments = listOf(navArgument(FlightDetailDestination.itemIdArg){
+            arguments = listOf(navArgument(FlightDetailDestination.itemIdArg) {
                 type = NavType.IntType
             })
-        ){
+        ) {
             FlightDetailsScreen(
                 onNavigateUp = { navController.navigateUp() }
             )

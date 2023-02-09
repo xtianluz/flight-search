@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +43,7 @@ fun FlightDetailsScreen(
     onNavigateUp: () -> Unit,
     viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
-    val flightInfo = viewModel.airportItem
+//    val flightInfo by viewModel.getAnItem().collectAsState()
 
     Scaffold(
         topBar = {
@@ -54,10 +55,14 @@ fun FlightDetailsScreen(
         }
     ){ innerPadding ->
 
-        Flight(
-            flightLabel = 0,
-            flightCode = flightInfo.iata_code,
-            flightName = flightInfo.name,
+//        Flight(
+//            flightLabel = R.string.flight_label,
+//            flightCode = flightInfo.iata_code,
+//            flightName = flightInfo.name,
+//            modifier = modifier.padding(innerPadding)
+//        )
+        Text(
+            text = "empty",
             modifier = modifier.padding(innerPadding)
         )
 

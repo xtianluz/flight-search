@@ -34,7 +34,7 @@ fun SearchScreen(
     viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState: UiState = viewModel.uiState
-//    val searchedItems by viewModel.getAllSearch().collectAsState(initial = emptyList())
+
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
