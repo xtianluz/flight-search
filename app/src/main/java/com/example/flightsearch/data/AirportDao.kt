@@ -15,9 +15,10 @@ interface AirportDao {
           """
     )
     suspend fun getAllSearch(search: String): List<Airport>
-
     @Query("SELECT * FROM airport")
     suspend fun getAllItems(): List<Airport>
+    @Query("SELECT * from airport WHERE id = :id")
+    suspend fun getItem(id: Int): Airport
 
 }
 

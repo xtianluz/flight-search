@@ -7,7 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,12 +17,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.flightsearch.R
+import com.example.flightsearch.data.Airport
 import com.example.flightsearch.data.Flights
 import com.example.flightsearch.data.LocalData
 import com.example.flightsearch.navigation.NavigationDestination
+import com.example.flightsearch.ui.AppViewModelProvider
 import com.example.flightsearch.ui.composable.FlightTopAppBar
 import com.example.flightsearch.ui.theme.FlightSearchTheme
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 
 object FlightDetailDestination: NavigationDestination{
     override val route = "flight_details"
@@ -33,8 +38,12 @@ object FlightDetailDestination: NavigationDestination{
 
 @Composable
 fun FlightDetailsScreen(
-    onNavigateUp: () -> Unit
+    modifier: Modifier = Modifier,
+    onNavigateUp: () -> Unit,
+    viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
+    val flightInfo = viewModel.airportItem
+
     Scaffold(
         topBar = {
             FlightTopAppBar(
@@ -44,8 +53,12 @@ fun FlightDetailsScreen(
             )
         }
     ){ innerPadding ->
-        FlightPairList(
-            modifier = Modifier.padding(innerPadding)
+
+        Flight(
+            flightLabel = 0,
+            flightCode = flightInfo.iata_code,
+            flightName = flightInfo.name,
+            modifier = modifier.padding(innerPadding)
         )
 
     }
@@ -110,12 +123,13 @@ fun FlightPair(flights: Flights) {
 fun Flight(
     flightLabel: Int,
     flightCode: String,
-    flightName: String
+    flightName: String,
+    modifier: Modifier = Modifier
 ) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Bottom,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(
                 start = 12.dp,
