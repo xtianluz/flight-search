@@ -39,12 +39,12 @@ object FlightDetailDestination: NavigationDestination{
 fun FlightDetailsScreen(
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
-    viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    viewModel: FlightDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
 
 ) {
 //    val flightInfo = viewModel.getAnItem().collectAsState(emptyFlow<Airport>()).value
 //    val flightInfo = viewModel.getCode().collectAsState(Airport(0,"","",0))
-
+    val itemCode: String = viewModel.itemCode
     Scaffold(
         topBar = {
             FlightTopAppBar(
@@ -61,10 +61,11 @@ fun FlightDetailsScreen(
 //            flightName = flightInfo.name,
 //            modifier = modifier.padding(innerPadding)
 //        )
-        Text(
-            text = viewModel.itemState.collectAsState(Airport(0,"","",1)).value.iata_code,
-            modifier = modifier.padding(innerPadding)
-        )
+            Text(
+                text = itemCode,
+                modifier = modifier.padding(innerPadding)
+            )
+
     }
 }
 

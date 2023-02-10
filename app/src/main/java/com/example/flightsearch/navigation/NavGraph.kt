@@ -15,23 +15,22 @@ import kotlinx.coroutines.flow.emptyFlow
 
 interface NavigationDestination {
     val route: String
-    val titleRes: Int
+    val titleRes: Any
 }
 
 @Composable
 fun FlightNavHost(
     navController: NavHostController,
-    viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     NavHost(
         navController = navController,
         startDestination = SearchDestination.route,
     ) {
         composable(route = SearchDestination.route) {
+            val viewModel: FlightDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
             SearchScreen(
                 navigateToFlightDetails = {
-                    navController.navigate("${FlightDetailDestination.route}/$it")
-//                    navController.navigate(FlightDetailDestination.route)
+                    navController.navigate("${FlightDetailDestination.route}/${it}")
                 }
             )
         }
@@ -39,13 +38,17 @@ fun FlightNavHost(
             route = FlightDetailDestination.routeWithArgs,
             arguments = listOf(navArgument(FlightDetailDestination.itemIdArg) {
                 type = NavType.StringType
+                nullable = true
             })
         ) {
             FlightDetailsScreen(
                 onNavigateUp = { navController.navigateUp() }
             )
         }
-
-
+        composable(
+            route = MockDestination.route
+        ){
+            MockScreen()
+        }
     }
 }

@@ -7,12 +7,19 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.flightsearch.FlightApplication
+import com.example.flightsearch.ui.screen.FlightDetailsViewModel
 import com.example.flightsearch.ui.screen.FlightSearchViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
             FlightSearchViewModel(
+                this.createSavedStateHandle(),
+                flightApplication().container.flightSearchRepository
+            )
+        }
+        initializer {
+            FlightDetailsViewModel(
                 this.createSavedStateHandle(),
                 flightApplication().container.flightSearchRepository
             )

@@ -67,7 +67,7 @@ fun SearchResultList(
         ){item ->
             SearchResult(
                 airport = item,
-                onItemClick = onItemClick
+                onItemClick = { onItemClick(item.iata_code) }
             )
             Divider()
         }
@@ -77,13 +77,13 @@ fun SearchResultList(
 @Composable
 fun SearchResult(
     airport: Airport,
-    onItemClick: (String) -> Unit,
+    onItemClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onItemClick(airport.iata_code) }
+            .clickable { onItemClick() }
             .padding(
                 start = 12.dp,
                 top = 3.dp,
