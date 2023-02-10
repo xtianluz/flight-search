@@ -31,20 +31,19 @@ import kotlinx.coroutines.flow.emptyFlow
 object FlightDetailDestination: NavigationDestination{
     override val route = "flight_details"
     override val titleRes = R.string.flight_details
-    const val itemIdArg = "WAW"
+    const val itemIdArg = "itemIdArg"
     val routeWithArgs = "${route}/${itemIdArg}"
 }
 
 @Composable
 fun FlightDetailsScreen(
-//    flightInfo: String = "destination",
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
     viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory),
 
 ) {
 //    val flightInfo = viewModel.getAnItem().collectAsState(emptyFlow<Airport>()).value
-    val flightInfo = viewModel.getCode().collectAsState(Airport(0,"","",0))
+//    val flightInfo = viewModel.getCode().collectAsState(Airport(0,"","",0))
 
     Scaffold(
         topBar = {
@@ -63,7 +62,7 @@ fun FlightDetailsScreen(
 //            modifier = modifier.padding(innerPadding)
 //        )
         Text(
-            text = flightInfo.value.toString(),
+            text = viewModel.itemState.collectAsState(Airport(0,"","",1)).value.iata_code,
             modifier = modifier.padding(innerPadding)
         )
     }

@@ -29,35 +29,23 @@ fun FlightNavHost(
     ) {
         composable(route = SearchDestination.route) {
             SearchScreen(
-                navigateToFlightDetails = { flightId ->
-                    navController.navigate("${FlightDetailDestination.route}/$flightId")
+                navigateToFlightDetails = {
+                    navController.navigate("${FlightDetailDestination.route}/$it")
 //                    navController.navigate(FlightDetailDestination.route)
                 }
             )
         }
-//        composable(
-//            route = FlightDetailDestination.routeWithArgs,
-//            arguments = listOf(navArgument(FlightDetailDestination.itemIdArg) {
-//                type = NavType.StringType
-//            })
-//        ) {backStackEntry ->
-//            val code = backStackEntry.arguments?.getString(FlightDetailDestination.itemIdArg)
-//                ?: error("error")
-//            val flightInfo = viewModel.getCode(code).collectAsState(emptyFlow<Airport>())
-//            FlightDetailsScreen(flightInfo.toString())
-//        }
-//        composable(route = FlightDetailDestination.route){
-//            FlightDetailsScreen(
-//                onNavigateUp = { navController.navigateUp() }
-//            )
-//        }
         composable(
             route = FlightDetailDestination.routeWithArgs,
             arguments = listOf(navArgument(FlightDetailDestination.itemIdArg) {
                 type = NavType.StringType
             })
-        ){
-                FlightDetailsScreen(onNavigateUp = { navController.navigateUp() })
+        ) {
+            FlightDetailsScreen(
+                onNavigateUp = { navController.navigateUp() }
+            )
         }
+
+
     }
 }

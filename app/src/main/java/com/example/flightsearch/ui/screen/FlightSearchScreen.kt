@@ -54,28 +54,6 @@ fun SearchScreen(
 }
 
 @Composable
-fun SearchTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            value = value,
-            onValueChange = onValueChange,
-            singleLine = true,
-            shape = CircleShape
-        )
-    }
-}
-
-@Composable
 fun SearchResultList(
     airportList: List<Airport>,
     onItemClick: (String) -> Unit
@@ -85,11 +63,11 @@ fun SearchResultList(
     ){
         items(
             items = airportList,
-            key = {airportList -> airportList.id}
+            key = {it.id}
         ){item ->
             SearchResult(
                 airport = item,
-                onItemClick = { onItemClick(it.iata_code) }
+                onItemClick = onItemClick
             )
             Divider()
         }
@@ -99,13 +77,13 @@ fun SearchResultList(
 @Composable
 fun SearchResult(
     airport: Airport,
-    onItemClick: (Airport) -> Unit,
+    onItemClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ){
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onItemClick(airport) }
+            .clickable { onItemClick(airport.iata_code) }
             .padding(
                 start = 12.dp,
                 top = 3.dp,
@@ -131,6 +109,26 @@ fun SearchResult(
     }
 }
 
-
+@Composable
+fun SearchTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            value = value,
+            onValueChange = onValueChange,
+            singleLine = true,
+            shape = CircleShape
+        )
+    }
+}
 
 
