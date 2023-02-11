@@ -32,7 +32,7 @@ object FlightDetailDestination: NavigationDestination{
     override val route = "flight_details"
     override val titleRes = R.string.flight_details
     const val itemIdArg = "itemIdArg"
-    val routeWithArgs = "${route}/${itemIdArg}"
+    val routeWithArgs = "${route}/{$itemIdArg}"
 }
 
 @Composable
@@ -42,8 +42,7 @@ fun FlightDetailsScreen(
     viewModel: FlightDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
 
 ) {
-//    val flightInfo = viewModel.getAnItem().collectAsState(emptyFlow<Airport>()).value
-//    val flightInfo = viewModel.getCode().collectAsState(Airport(0,"","",0))
+
     val itemCode: String = viewModel.itemCode
     Scaffold(
         topBar = {
@@ -55,17 +54,10 @@ fun FlightDetailsScreen(
         }
     ){ innerPadding ->
 
-//        Flight(
-//            flightLabel = R.string.flight_label,
-//            flightCode = flightInfo.iata_code,
-//            flightName = flightInfo.name,
-//            modifier = modifier.padding(innerPadding)
-//        )
             Text(
                 text = itemCode,
                 modifier = modifier.padding(innerPadding)
             )
-
     }
 }
 
@@ -176,7 +168,6 @@ fun Flight(
     }
 }
 
-////////////////////
 @Preview(
     showSystemUi = true,
     showBackground = true
@@ -184,14 +175,6 @@ fun Flight(
 @Composable
 fun FlightDetailsPreview() {
     FlightSearchTheme {
-//        FlightPair(
-//            flights = Flights(
-//                departureCode = "FCO",
-//                departureName = "Los Angeles",
-//                arrivalCode = "MAD",
-//                arrivalName = "Arnold"
-//            )
-//        )
-        FlightPairList()
+
     }
 }

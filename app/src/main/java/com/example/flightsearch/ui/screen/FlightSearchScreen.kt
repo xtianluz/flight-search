@@ -33,7 +33,7 @@ fun SearchScreen(
     navigateToFlightDetails: (String) -> Unit,
     viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val uiState: UiState = viewModel.uiState
+    val uiState = viewModel.uiState
 
     Column(
         verticalArrangement = Arrangement.Top,

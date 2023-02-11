@@ -45,7 +45,6 @@ class FlightSearchViewModel(
         }
     }
     private suspend fun getAllSearch(): List<Airport> = flightSearchRepository.getAllSearch(userInput)
-    fun getCode(): Flow<Airport> = flightSearchRepository.getCode("WAW")
 }
 
 

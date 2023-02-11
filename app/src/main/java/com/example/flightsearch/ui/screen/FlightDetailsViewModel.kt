@@ -13,17 +13,6 @@ class FlightDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val flightSearchRepository: FlightSearchRepository
 ) : ViewModel(){
-     val itemCode: String = savedStateHandle[FlightDetailDestination.itemIdArg] ?: "WAW"
-//    private val itemCode: String = checkNotNull(savedStateHandle[FlightDetailDestination.itemIdArg])
-//    var flightInfo by mutableStateOf("")
-//        private set
-//
-//    fun getCode() {
-//        viewModelScope.launch {
-//            flightSearchRepository.getCode(itemCode).collect{
-//                flightInfo = it.iata_code
-//            }
-//        }
-//    }
+     val itemCode: String = savedStateHandle[FlightDetailDestination.itemIdArg] ?: ""
 
 }

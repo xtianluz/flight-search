@@ -16,12 +16,10 @@ object MockDestination: NavigationDestination{
 
 @Composable
 fun MockScreen(
-    viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
-    val code = viewModel.getCode().collectAsState(initial = "Default Code")
     Column {
         Text(
-            text = code.value.toString()
+            text = "placeholder"
         )
     }
 }
