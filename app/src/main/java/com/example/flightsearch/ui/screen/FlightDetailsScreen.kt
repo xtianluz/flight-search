@@ -7,7 +7,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +29,8 @@ import com.example.flightsearch.ui.AppViewModelProvider
 import com.example.flightsearch.ui.composable.FlightTopAppBar
 import com.example.flightsearch.ui.theme.FlightSearchTheme
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 object FlightDetailDestination: NavigationDestination{
     override val route = "flight_details"
@@ -43,7 +47,6 @@ fun FlightDetailsScreen(
 
 ) {
 
-    val itemCode: String = viewModel.itemCode
     Scaffold(
         topBar = {
             FlightTopAppBar(
@@ -55,7 +58,7 @@ fun FlightDetailsScreen(
     ){ innerPadding ->
 
             Text(
-                text = itemCode,
+                text = "",
                 modifier = modifier.padding(innerPadding)
             )
     }

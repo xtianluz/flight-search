@@ -14,15 +14,9 @@ interface AirportDao {
           OR iata_code LIKE '%'|| :search ||'%'
           """
     )
-    suspend fun getAllSearch(search: String): List<Airport>
-    @Query("SELECT * FROM airport")
-    suspend fun getAllItems(): List<Airport>
-    @Query("SELECT * from airport WHERE id = :id")
-    fun getItem(id: Int): Flow<Airport>
-
+    suspend fun getSearchResult(search: String): List<Airport>
     @Query("SELECT * FROM airport WHERE iata_code = :iata_code")
-    fun getCode(iata_code: String): Flow<Airport>
-
+    fun getDepartureFlight(iata_code: String): Flow<Airport>
+    @Query("SELECT * FROM airport WHERE iata_code != :iata_code")
+    fun getArrivalFlights(iata_code: String): Flow<List<Airport>>
 }
-
-//'%'|| :search ||'%'

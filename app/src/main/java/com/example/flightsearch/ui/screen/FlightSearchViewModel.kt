@@ -31,7 +31,7 @@ class FlightSearchViewModel(
     private var flightList: List<Airport> by mutableStateOf(emptyList())
 
     private suspend fun searchResult(){
-        flightList = getAllSearch()
+        flightList = getSearchResult()
         uiState = UiState.Result(flightList)
     }
     fun updateUserInput(newUserInput: String){
@@ -44,7 +44,7 @@ class FlightSearchViewModel(
             uiState = UiState.DefaultState
         }
     }
-    private suspend fun getAllSearch(): List<Airport> = flightSearchRepository.getAllSearch(userInput)
+    private suspend fun getSearchResult(): List<Airport> = flightSearchRepository.getSearchResult(userInput)
 }
 
 
