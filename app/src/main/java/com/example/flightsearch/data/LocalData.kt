@@ -58,4 +58,7 @@ object LocalData{
             id = 4
         )
     )
+    val singleAirport: Airport = Airport(
+        99,"San Fransisco Airport","FCO", 369
+    )
 }

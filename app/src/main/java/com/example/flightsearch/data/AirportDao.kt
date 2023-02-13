@@ -16,7 +16,7 @@ interface AirportDao {
     )
     suspend fun getSearchResult(search: String): List<Airport>
     @Query("SELECT * FROM airport WHERE iata_code = :iata_code")
-    fun getDepartureFlight(iata_code: String): Flow<Airport>
+    fun getDepartureFlight(iata_code: String): Airport
     @Query("SELECT * FROM airport WHERE iata_code != :iata_code")
-    fun getArrivalFlights(iata_code: String): Flow<List<Airport>>
+    fun getArrivalFlights(iata_code: String): List<Airport>
 }

@@ -23,6 +23,7 @@ abstract class AirportDatabase: RoomDatabase() {
                 Room.databaseBuilder(context, AirportDatabase::class.java, "flight_search")
                     .createFromAsset("flight_search.db")
                     .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
                     .build()
                     .also { INSTANCE = it }
             }

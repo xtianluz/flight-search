@@ -3,18 +3,13 @@ package com.example.flightsearch.ui.screen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.Divider
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,9 +23,6 @@ import com.example.flightsearch.navigation.NavigationDestination
 import com.example.flightsearch.ui.AppViewModelProvider
 import com.example.flightsearch.ui.composable.FlightTopAppBar
 import com.example.flightsearch.ui.theme.FlightSearchTheme
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 object FlightDetailDestination: NavigationDestination{
     override val route = "flight_details"
@@ -46,7 +38,6 @@ fun FlightDetailsScreen(
     viewModel: FlightDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
 
 ) {
-
     Scaffold(
         topBar = {
             FlightTopAppBar(
@@ -56,128 +47,91 @@ fun FlightDetailsScreen(
             )
         }
     ){ innerPadding ->
-
-            Text(
-                text = "",
-                modifier = modifier.padding(innerPadding)
+            SelectedFlightList(
+                destinationList = LocalData.airportList,
+                modifier = modifier.padding(innerPadding),
+                selectedDeparture = LocalData.singleAirport
             )
+//        Text(
+//            text = viewModel.itemCode,
+//            modifier = modifier.padding(innerPadding)
+//        )
     }
 }
 
 @Composable
-fun FlightPairList(
-    flightList: List<Flights> = LocalData.flightList,
-    modifier: Modifier = Modifier
+fun SelectedFlightList(
+    modifier: Modifier = Modifier,
+    destinationList: List<Airport>,
+    selectedDeparture: Airport
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(9.dp)
     ){
         items(
-            items = flightList,
+            items = destinationList,
             key = {item -> item.id}
-            ){ item ->
-            FlightPair(flights = item)
+            ){item ->
+            FlightComponent(
+                flightCode = selectedDeparture.iata_code,
+                flightName = selectedDeparture.name,
+                flightLabel = stringResource(R.string.depart)
+            )
+            FlightComponent(
+                flightCode = item.iata_code,
+                flightName = item.name,
+                flightLabel = stringResource(R.string.arrive)
+            )
             Divider(modifier = Modifier.padding(top = 9.dp))
         }
     }
 }
 
 @Composable
-fun FlightPair(flights: Flights) {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier
-                .weight(5f)
-        ) {
-            Flight(
-                flightLabel = R.string.depart,
-                flightCode = flights.departureCode,
-                flightName = flights.departureName,
-            )
-            Flight(
-                flightLabel = R.string.arrive,
-                flightCode = flights.arrivalCode,
-                flightName = flights.arrivalName,
-            )
-        }
-        IconButton(
-            onClick = {},
-            modifier = Modifier
-                .weight(1f)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Star,
-                contentDescription = stringResource(R.string.favourite),
-                tint = Color.Cyan,
-                modifier = Modifier
-                    .size(36.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun Flight(
-    flightLabel: Int,
+fun FlightComponent(
+    modifier: Modifier = Modifier,
     flightCode: String,
     flightName: String,
-    modifier: Modifier = Modifier
-) {
+    flightLabel: String
+){
     Row(
-        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Bottom,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                start = 12.dp,
-                top = 6.dp
-            )
+        modifier = modifier.height(36.dp),
+        horizontalArrangement = Arrangement.Center
     ) {
         Column(
-        modifier = Modifier
-            .weight(1f)
-            .padding(start = 6.dp),
-            
-        ) {
+            modifier = Modifier
+                .weight(1f)
+                ,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
             Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = stringResource(flightLabel),
-                textAlign = TextAlign.Center,
+                text = flightLabel,
                 fontSize = 12.sp
             )
             Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = flightCode,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold
+                text = flightCode
             )
         }
         Text(
             text = flightName,
             modifier = Modifier
-                .weight(5f)
-                .padding(
-                    start = 12.dp,
-                    end = 12.dp,
-                    top = 3.dp
-                )
+                .weight(6f)
+                .padding(end = 6.dp),
+            maxLines = 1,
+            textAlign = TextAlign.Start
         )
-
     }
 }
 
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
+@Preview(showBackground = true)
 @Composable
-fun FlightDetailsPreview() {
+fun PreviewComposable(){
     FlightSearchTheme {
-
+        SelectedFlightList(
+            selectedDeparture = LocalData.singleAirport,
+            destinationList = LocalData.airportList
+        )
     }
 }
+
