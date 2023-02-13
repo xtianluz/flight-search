@@ -3,12 +3,13 @@ package com.example.flightsearch.ui.screen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Divider
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,8 +37,9 @@ fun FlightDetailsScreen(
     modifier: Modifier = Modifier,
     onNavigateUp: () -> Unit,
     viewModel: FlightDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
-
 ) {
+    val selectedDeparture = viewModel.selectedDeparture
+    val selectedArrival = viewModel.selectedArrivals
     Scaffold(
         topBar = {
             FlightTopAppBar(
@@ -48,14 +50,11 @@ fun FlightDetailsScreen(
         }
     ){ innerPadding ->
             SelectedFlightList(
-                destinationList = LocalData.airportList,
+                destinationList = selectedArrival,
                 modifier = modifier.padding(innerPadding),
-                selectedDeparture = LocalData.singleAirport
+                selectedDeparture = selectedDeparture,
+                addRemoveToFavorite = {}
             )
-//        Text(
-//            text = viewModel.itemCode,
-//            modifier = modifier.padding(innerPadding)
-//        )
     }
 }
 
@@ -63,7 +62,8 @@ fun FlightDetailsScreen(
 fun SelectedFlightList(
     modifier: Modifier = Modifier,
     destinationList: List<Airport>,
-    selectedDeparture: Airport
+    selectedDeparture: Airport,
+    addRemoveToFavorite: () -> Unit,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(9.dp)
@@ -72,17 +72,71 @@ fun SelectedFlightList(
             items = destinationList,
             key = {item -> item.id}
             ){item ->
+            ToFavouriteWidget(
+                departureCode = selectedDeparture.iata_code,
+                departureName = selectedDeparture.name,
+                arrivalCode = item.iata_code,
+                arrivalName = item.name,
+                addRemoveToFavorite = addRemoveToFavorite,
+            )
+            Divider(modifier = Modifier.padding(top = 9.dp))
+        }
+    }
+}
+
+@Composable
+fun ToFavouriteWidget(
+    departureCode: String,
+    departureName: String,
+    arrivalCode: String,
+    arrivalName: String,
+    addRemoveToFavorite: () -> Unit,
+    modifier: Modifier = Modifier
+){
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = modifier.weight(6f)
+        ) {
             FlightComponent(
-                flightCode = selectedDeparture.iata_code,
-                flightName = selectedDeparture.name,
+                flightCode = departureCode,
+                flightName = departureName,
                 flightLabel = stringResource(R.string.depart)
             )
             FlightComponent(
-                flightCode = item.iata_code,
-                flightName = item.name,
+                flightCode = arrivalCode,
+                flightName = arrivalName,
                 flightLabel = stringResource(R.string.arrive)
             )
-            Divider(modifier = Modifier.padding(top = 9.dp))
+        }
+        ToFavouriteButton(
+            addRemoveToFavorite = addRemoveToFavorite,
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+
+@Composable
+fun ToFavouriteButton(
+    modifier: Modifier = Modifier,
+    addRemoveToFavorite: () -> Unit,
+    isFavourite: Boolean = false,
+){
+    val starTint = if(isFavourite){
+        Color.Cyan
+    }else{ Color.LightGray }
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+    ){
+        IconButton(onClick = addRemoveToFavorite) {
+            Icon(
+                imageVector = Icons.Filled.Star,
+                contentDescription = "Star Button",
+                tint = starTint,
+                modifier = Modifier.size(26.dp)
+            )
         }
     }
 }
@@ -96,18 +150,17 @@ fun FlightComponent(
 ){
     Row(
         verticalAlignment = Alignment.Bottom,
-        modifier = modifier.height(36.dp),
+        modifier = modifier.height(46.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         Column(
-            modifier = Modifier
-                .weight(1f)
-                ,
+            modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text(
                 text = flightLabel,
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 6.dp)
             )
             Text(
                 text = flightCode
@@ -116,8 +169,9 @@ fun FlightComponent(
         Text(
             text = flightName,
             modifier = Modifier
-                .weight(6f)
-                .padding(end = 6.dp),
+                .padding(start = 6.dp, end = 6.dp)
+                .fillMaxWidth()
+                .weight(5f),
             maxLines = 1,
             textAlign = TextAlign.Start
         )
@@ -128,9 +182,12 @@ fun FlightComponent(
 @Composable
 fun PreviewComposable(){
     FlightSearchTheme {
-        SelectedFlightList(
-            selectedDeparture = LocalData.singleAirport,
-            destinationList = LocalData.airportList
+        ToFavouriteWidget(
+            departureCode = "asd",
+            departureName = "asd",
+            arrivalCode = "asdf",
+            arrivalName = "asdf",
+            addRemoveToFavorite = { /*TODO*/ },
         )
     }
 }
