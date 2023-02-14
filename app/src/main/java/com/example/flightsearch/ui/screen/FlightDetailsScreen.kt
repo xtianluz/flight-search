@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,12 +19,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.flightsearch.R
 import com.example.flightsearch.data.Airport
-import com.example.flightsearch.data.Flights
-import com.example.flightsearch.data.LocalData
+import com.example.flightsearch.data.Favorite
 import com.example.flightsearch.navigation.NavigationDestination
 import com.example.flightsearch.ui.AppViewModelProvider
 import com.example.flightsearch.ui.composable.FlightTopAppBar
 import com.example.flightsearch.ui.theme.FlightSearchTheme
+import kotlinx.coroutines.launch
 
 object FlightDetailDestination: NavigationDestination{
     override val route = "flight_details"
@@ -40,6 +41,7 @@ fun FlightDetailsScreen(
 ) {
     val selectedDeparture = viewModel.selectedDeparture
     val selectedArrival = viewModel.selectedArrivals
+    val scope = rememberCoroutineScope()
     Scaffold(
         topBar = {
             FlightTopAppBar(
@@ -53,7 +55,15 @@ fun FlightDetailsScreen(
                 destinationList = selectedArrival,
                 modifier = modifier.padding(innerPadding),
                 selectedDeparture = selectedDeparture,
-                addRemoveToFavorite = {}
+                isFavourite = viewModel.isFavorite,
+                addRemoveToFavorite = {scope.launch{
+                        viewModel.addRemoveToFavorite(
+                            departureCode = it.departureCode,
+                            destinationCode = it.destinationCode,
+                            id = it.id
+                        )
+                }
+                }
             )
     }
 }
@@ -63,7 +73,8 @@ fun SelectedFlightList(
     modifier: Modifier = Modifier,
     destinationList: List<Airport>,
     selectedDeparture: Airport,
-    addRemoveToFavorite: () -> Unit,
+    addRemoveToFavorite: (Favorite) -> Unit,
+    isFavourite: Boolean
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(9.dp)
@@ -77,7 +88,16 @@ fun SelectedFlightList(
                 departureName = selectedDeparture.name,
                 arrivalCode = item.iata_code,
                 arrivalName = item.name,
-                addRemoveToFavorite = addRemoveToFavorite,
+                addRemoveToFavorite = {
+                    addRemoveToFavorite(
+                        Favorite(
+                            id = item.id,
+                            departureCode = selectedDeparture.iata_code,
+                            destinationCode = item.iata_code
+                        )
+                    )
+                },
+                isFavourite = isFavourite
             )
             Divider(modifier = Modifier.padding(top = 9.dp))
         }
@@ -91,6 +111,7 @@ fun ToFavouriteWidget(
     arrivalCode: String,
     arrivalName: String,
     addRemoveToFavorite: () -> Unit,
+    isFavourite: Boolean,
     modifier: Modifier = Modifier
 ){
     Row(
@@ -112,7 +133,8 @@ fun ToFavouriteWidget(
         }
         ToFavouriteButton(
             addRemoveToFavorite = addRemoveToFavorite,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            isFavourite = isFavourite
         )
     }
 }
@@ -169,7 +191,10 @@ fun FlightComponent(
         Text(
             text = flightName,
             modifier = Modifier
-                .padding(start = 6.dp, end = 6.dp)
+                .padding(
+                    start = 6.dp,
+                    end = 6.dp
+                )
                 .fillMaxWidth()
                 .weight(5f),
             maxLines = 1,
@@ -188,6 +213,8 @@ fun PreviewComposable(){
             arrivalCode = "asdf",
             arrivalName = "asdf",
             addRemoveToFavorite = { /*TODO*/ },
+            isFavourite = false
+
         )
     }
 }

@@ -1,13 +1,12 @@
 package com.example.flightsearch.data
 
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [Airport::class],
+    entities = [Airport::class, Favorite::class],
     version = 1,
     exportSchema = false
     )

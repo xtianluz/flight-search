@@ -28,36 +28,6 @@ object LocalData{
         ),
     )
 
-    val flightList: List<Flights> = listOf(
-        Flights(
-            arrivalCode = "SVO",
-            arrivalName = "Arrival 1",
-            departureCode = "FCO",
-            departureName = "Leonardo",
-            id = 1
-        ),
-        Flights(
-            arrivalCode = "MAD",
-            arrivalName = "Arrival 2",
-            departureCode = "FCO",
-            departureName = "Leonardo",
-            id = 2
-        ),
-        Flights(
-            arrivalCode = "TES",
-            arrivalName = "Arrival 3",
-            departureCode = "FCO",
-            departureName = "Leonardo",
-            id = 3
-        ),
-        Flights(
-            arrivalCode = "LOC",
-            arrivalName = "Arrival 4",
-            departureCode = "FCO",
-            departureName = "Leonardo",
-            id = 4
-        )
-    )
     val singleAirport: Airport = Airport(
         99,"San Fransisco Airport","FCO", 369
     )
