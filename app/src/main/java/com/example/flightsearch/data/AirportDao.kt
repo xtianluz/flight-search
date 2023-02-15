@@ -2,6 +2,7 @@ package com.example.flightsearch.data
 
 import androidx.room.*
 import androidx.room.Insert
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AirportDao {
@@ -23,7 +24,7 @@ interface AirportDao {
     @Query("SELECT * FROM airport WHERE iata_code != :iata_code")
     fun getArrivalFlights(iata_code: String): List<Airport>
     @Query("SELECT * FROM favorite")
-    fun getAllFavorites(): List<Favorite>
+    suspend fun getAllFavorites(): List<Favorite>
     @Query("SELECT * FROM favorite WHERE departure_code = :departure_code AND destination_code = :destination_code")
     suspend fun findOneFavorite(departure_code: String, destination_code: String): Favorite
 }

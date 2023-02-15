@@ -3,11 +3,11 @@ package com.example.flightsearch.ui.screen
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.flightsearch.data.Favorite
 import com.example.flightsearch.data.FlightSearchRepository
+import com.example.flightsearch.data.LocalData
 
 class FlightDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -17,14 +17,8 @@ class FlightDetailsViewModel(
 
     val selectedDeparture = flightSearchRepository.getDepartureFlight(itemCode)
     val selectedArrivals = flightSearchRepository.getArrivalFlights(itemCode)
-    var starTint: Color by mutableStateOf(Color.LightGray)
-    private var foundFavorite: Favorite by mutableStateOf(
-        Favorite(
-            id = 0,
-            departure_code = "FOO",
-            destination_code = "FOO"
-        )
-    )
+    var alreadyExist: Boolean by mutableStateOf(false)
+    private var foundFavorite: Favorite by mutableStateOf(LocalData.singleFavorite)
     private suspend fun addToFavorite(departureCode: String, destinationCode: String){
         flightSearchRepository.addToFavorite(
             favorite = Favorite(
@@ -45,7 +39,7 @@ class FlightDetailsViewModel(
             destinationCode = destinationCode
         )
     }
-    suspend fun addRemoveToFavorite(
+    suspend fun addToFavoriteWithQuery(
         departureCode: String,
         destinationCode: String,
         id: Int
@@ -60,13 +54,8 @@ class FlightDetailsViewModel(
                 departureCode = departureCode,
                 destinationCode = destinationCode
             )
-            starTint = Color.Cyan
         }else{
-            removeFromFavorite(
-                favorite = foundFavorite
-            )
-            starTint = Color.LightGray
+            alreadyExist = true
         }
     }
-
 }

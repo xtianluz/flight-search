@@ -9,6 +9,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -22,6 +23,7 @@ import com.example.flightsearch.data.Airport
 import com.example.flightsearch.data.LocalData
 import com.example.flightsearch.navigation.NavigationDestination
 import com.example.flightsearch.ui.AppViewModelProvider
+import com.example.flightsearch.ui.composable.UserSelectedFavoriteList
 
 object SearchDestination: NavigationDestination{
     override val route = "search_screen"
@@ -48,13 +50,17 @@ fun SearchScreen(
                 airportList = uiState.searchResult,
                 onItemClick = navigateToFlightDetails
             )
-            else -> Text("Empty")
+            is UiState.Favorite -> UserSelectedFavoriteList(
+                favoriteList = uiState.favoriteList,
+                onClick = { viewModel.removeFromFavorite() }
+            )
+            else -> Text("Search")
         }
     }
 }
 
 @Composable
-fun SearchResultList(
+private fun SearchResultList(
     airportList: List<Airport>,
     onItemClick: (String) -> Unit
 ){
@@ -75,7 +81,7 @@ fun SearchResultList(
 }
 
 @Composable
-fun SearchResult(
+private fun SearchResult(
     airport: Airport,
     onItemClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -110,7 +116,7 @@ fun SearchResult(
 }
 
 @Composable
-fun SearchTextField(
+private fun SearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
 ) {

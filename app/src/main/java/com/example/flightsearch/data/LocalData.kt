@@ -29,6 +29,42 @@ object LocalData{
     )
 
     val singleAirport: Airport = Airport(
-        99,"San Fransisco Airport","FCO", 369
+        0,"FOO","FCO", 0
+    )
+
+    val selectedList: List<SelectedFavorite> = listOf(
+        SelectedFavorite(
+            id = 1,
+            departureCode = "BOO",
+            departureName = "FOO",
+            destinationCode = "BOO",
+            destinationName = "FOO"
+        ),
+        SelectedFavorite(
+            id = 2,
+            departureCode = "BOO",
+            departureName = "FOO",
+            destinationCode = "BOO",
+            destinationName = "FOO"
+        ),
+        SelectedFavorite(
+            id = 3,
+            departureCode = "BOO",
+            departureName = "FOO",
+            destinationCode = "BOO",
+            destinationName = "FOO"
+        ),
+    )
+    val singleFavorite: Favorite = Favorite(
+        id = 0,
+        departure_code = "FOO",
+        destination_code = "FOO"
+    )
+    val selectedFavorite: SelectedFavorite = SelectedFavorite(
+        id = 0,
+        destinationCode = "FOO",
+        departureCode = "FOO",
+        destinationName = "FOO",
+        departureName = "FOO"
     )
 }
