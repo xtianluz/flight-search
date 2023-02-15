@@ -58,8 +58,8 @@ fun FlightDetailsScreen(
                 isFavourite = viewModel.isFavorite,
                 addRemoveToFavorite = {scope.launch{
                         viewModel.addRemoveToFavorite(
-                            departureCode = it.departureCode,
-                            destinationCode = it.destinationCode,
+                            departureCode = it.departure_code,
+                            destinationCode = it.destination_code,
                             id = it.id
                         )
                 }
@@ -91,9 +91,9 @@ fun SelectedFlightList(
                 addRemoveToFavorite = {
                     addRemoveToFavorite(
                         Favorite(
-                            id = item.id,
-                            departureCode = selectedDeparture.iata_code,
-                            destinationCode = item.iata_code
+                            id = 0,
+                            departure_code = selectedDeparture.iata_code,
+                            destination_code = item.iata_code
                         )
                     )
                 },

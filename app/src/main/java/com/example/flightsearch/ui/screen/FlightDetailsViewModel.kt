@@ -5,10 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.flightsearch.data.Favorite
 import com.example.flightsearch.data.FlightSearchRepository
-import kotlinx.coroutines.launch
 
 class FlightDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -20,27 +18,33 @@ class FlightDetailsViewModel(
     val selectedArrivals = flightSearchRepository.getArrivalFlights(itemCode)
     var isFavorite: Boolean by mutableStateOf(false)
 
-    private var queryFavorite: Favorite by mutableStateOf(
+    private var foundFavorite: Favorite by mutableStateOf(
         Favorite(
-            0,
-            "empty",
-            "empty"
+            id = 0,
+            departure_code = "FOO",
+            destination_code = "FOO"
         )
     )
-    var isExisting: Boolean by mutableStateOf(false)
-
-    //check if the selected flight already exist in the database
-    //if existing then can proceed to remove from favorite
-    private suspend fun checkIfExisting(departureCode: String, destinationCode: String) {
-        queryFavorite =
-        try {
-            flightSearchRepository.isExistingFavorite(
-                destinationCode = destinationCode,
-                departureCode = departureCode
+    private suspend fun addToFavorite(departureCode: String, destinationCode: String){
+        flightSearchRepository.addToFavorite(
+            favorite = Favorite(
+                id = 0,
+                departure_code = departureCode,
+                destination_code = destinationCode
             )
-        } catch (_error: Error){
-            throw Exception(_error)
-        }
+        )
+    }
+    private suspend fun removeFromFavorite(favorite: Favorite){
+        flightSearchRepository.removeFromFavorite(
+                favorite = favorite
+        )
+    }
+
+    private suspend fun findOneFavorite(departureCode: String, destinationCode: String) {
+        foundFavorite = flightSearchRepository.findOneFavorite(
+            departureCode = departureCode,
+            destinationCode = destinationCode
+        )
     }
 
     suspend fun addRemoveToFavorite(
@@ -48,22 +52,23 @@ class FlightDetailsViewModel(
         destinationCode: String,
         id: Int
     ) {
-        viewModelScope.launch {
-            checkIfExisting(
+        findOneFavorite(
+            departureCode = departureCode,
+            destinationCode = destinationCode
+        )
+        if(foundFavorite == null){
+            println("Empty")
+            addToFavorite(
                 departureCode = departureCode,
                 destinationCode = destinationCode
             )
-            println("$queryFavorite")
-            if(queryFavorite != null){
-            isExisting = queryFavorite.departureCode == departureCode && queryFavorite.destinationCode == destinationCode
-                if(isExisting){
-                    println("Favorite already exist")
-                }else{
-                    println("Added to favorite")
-                }
-            }else{
-                println("$queryFavorite")
-            }
+        }else{
+            println("Found")
+            println("Deleting")
+            removeFromFavorite(
+                favorite = foundFavorite
+            )
         }
     }
+
 }
