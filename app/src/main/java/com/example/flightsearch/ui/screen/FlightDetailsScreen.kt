@@ -55,15 +55,15 @@ fun FlightDetailsScreen(
                 destinationList = selectedArrival,
                 modifier = modifier.padding(innerPadding),
                 selectedDeparture = selectedDeparture,
-                isFavourite = viewModel.isFavorite,
                 addRemoveToFavorite = {scope.launch{
                         viewModel.addRemoveToFavorite(
                             departureCode = it.departure_code,
                             destinationCode = it.destination_code,
                             id = it.id
                         )
-                }
-                }
+                    }
+                },
+                starTint = viewModel.starTint
             )
     }
 }
@@ -74,7 +74,7 @@ fun SelectedFlightList(
     destinationList: List<Airport>,
     selectedDeparture: Airport,
     addRemoveToFavorite: (Favorite) -> Unit,
-    isFavourite: Boolean
+    starTint: Color
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(9.dp)
@@ -97,7 +97,7 @@ fun SelectedFlightList(
                         )
                     )
                 },
-                isFavourite = isFavourite
+                starTint = starTint
             )
             Divider(modifier = Modifier.padding(top = 9.dp))
         }
@@ -111,7 +111,7 @@ fun ToFavouriteWidget(
     arrivalCode: String,
     arrivalName: String,
     addRemoveToFavorite: () -> Unit,
-    isFavourite: Boolean,
+    starTint: Color,
     modifier: Modifier = Modifier
 ){
     Row(
@@ -134,7 +134,7 @@ fun ToFavouriteWidget(
         ToFavouriteButton(
             addRemoveToFavorite = addRemoveToFavorite,
             modifier = Modifier.weight(1f),
-            isFavourite = isFavourite
+            starTint = starTint
         )
     }
 }
@@ -143,11 +143,8 @@ fun ToFavouriteWidget(
 fun ToFavouriteButton(
     modifier: Modifier = Modifier,
     addRemoveToFavorite: () -> Unit,
-    isFavourite: Boolean = false,
+    starTint: Color,
 ){
-    val starTint = if(isFavourite){
-        Color.Cyan
-    }else{ Color.LightGray }
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -207,15 +204,13 @@ fun FlightComponent(
 @Composable
 fun PreviewComposable(){
     FlightSearchTheme {
-        ToFavouriteWidget(
-            departureCode = "asd",
-            departureName = "asd",
-            arrivalCode = "asdf",
-            arrivalName = "asdf",
-            addRemoveToFavorite = { /*TODO*/ },
-            isFavourite = false
-
-        )
+//        ToFavouriteWidget(
+//            departureCode = "asd",
+//            departureName = "asd",
+//            arrivalCode = "asdf",
+//            arrivalName = "asdf",
+//            addRemoveToFavorite = { /*TODO*/ },
+//        )
     }
 }
 

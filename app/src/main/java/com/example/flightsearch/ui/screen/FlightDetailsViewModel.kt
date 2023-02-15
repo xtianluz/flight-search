@@ -3,6 +3,7 @@ package com.example.flightsearch.ui.screen
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.flightsearch.data.Favorite
@@ -16,8 +17,7 @@ class FlightDetailsViewModel(
 
     val selectedDeparture = flightSearchRepository.getDepartureFlight(itemCode)
     val selectedArrivals = flightSearchRepository.getArrivalFlights(itemCode)
-    var isFavorite: Boolean by mutableStateOf(false)
-
+    var starTint: Color by mutableStateOf(Color.LightGray)
     private var foundFavorite: Favorite by mutableStateOf(
         Favorite(
             id = 0,
@@ -28,7 +28,7 @@ class FlightDetailsViewModel(
     private suspend fun addToFavorite(departureCode: String, destinationCode: String){
         flightSearchRepository.addToFavorite(
             favorite = Favorite(
-                id = 0,
+                id = 0,//set to 0 so autogenerate will decide
                 departure_code = departureCode,
                 destination_code = destinationCode
             )
@@ -39,14 +39,12 @@ class FlightDetailsViewModel(
                 favorite = favorite
         )
     }
-
     private suspend fun findOneFavorite(departureCode: String, destinationCode: String) {
         foundFavorite = flightSearchRepository.findOneFavorite(
             departureCode = departureCode,
             destinationCode = destinationCode
         )
     }
-
     suspend fun addRemoveToFavorite(
         departureCode: String,
         destinationCode: String,
@@ -56,18 +54,18 @@ class FlightDetailsViewModel(
             departureCode = departureCode,
             destinationCode = destinationCode
         )
+        //ignore if statement warning for giving result always false
         if(foundFavorite == null){
-            println("Empty")
             addToFavorite(
                 departureCode = departureCode,
                 destinationCode = destinationCode
             )
+            starTint = Color.Cyan
         }else{
-            println("Found")
-            println("Deleting")
             removeFromFavorite(
                 favorite = foundFavorite
             )
+            starTint = Color.LightGray
         }
     }
 
