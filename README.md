@@ -1,0 +1,8 @@
+# flight-search
+Flight Search App Challenge - Room, DataStore, MVVM, Manual DI, UI Design.
+
+GOOGLE CODE LAB CHALLENGE
+
+FLIGHT SEARCH APP - ROOM DATABASE, PREFERENCES DATASTORE
+
+WORKING APP
