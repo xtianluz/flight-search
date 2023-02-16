@@ -1,14 +1,13 @@
 package com.example.flightsearch.ui.screen
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.flightsearch.data.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 sealed interface UiState {
@@ -39,7 +38,7 @@ class FlightSearchViewModel(
         launchFavorite()
     }
 
-    private fun launchFavorite(){
+    fun launchFavorite(){
         viewModelScope.launch {
             favoriteCodeList = flightSearchRepository.getAllFavorites()
             favoriteCodeList.forEach{
@@ -59,12 +58,10 @@ class FlightSearchViewModel(
             uiState = UiState.Favorite(selectedFavoriteList)
         }
     }
-
     private suspend fun searchResult() {
         flightList = getSearchResult()
         uiState = UiState.Result(flightList)
     }
-
     fun updateUserInput(newUserInput: String) {
         userInput = newUserInput
         if (userInput.isNotBlank()) {
@@ -83,6 +80,7 @@ class FlightSearchViewModel(
             departureCode = departureCode,
             destinationCode = destinationCode,
         )
+        //Just ignore warning, condition always true because of initial value, until fetching data from database
         if(foundFavorite != null) {
                 removeFromFavorite(
                     favorite = foundFavorite

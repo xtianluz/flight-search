@@ -40,7 +40,7 @@ fun FlightNavHost(
         ) {
             FlightDetailsScreen(
                 onNavigateUp = {
-                    navController.navigateUp()
+                    navController.navigate(SearchDestination.route)
                 }
             )
         }

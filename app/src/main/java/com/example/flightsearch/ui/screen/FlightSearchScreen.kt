@@ -40,8 +40,6 @@ fun SearchScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-//    val newUiState by viewModel.newUiState.collectAsState()
-
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
