@@ -28,11 +28,7 @@ class FlightDetailsViewModel(
             )
         )
     }
-    private suspend fun removeFromFavorite(favorite: Favorite){
-        flightSearchRepository.removeFromFavorite(
-                favorite = favorite
-        )
-    }
+
     private suspend fun findOneFavorite(departureCode: String, destinationCode: String) {
         foundFavorite = flightSearchRepository.findOneFavorite(
             departureCode = departureCode,
@@ -54,6 +50,7 @@ class FlightDetailsViewModel(
                 departureCode = departureCode,
                 destinationCode = destinationCode
             )
+            alreadyExist = false
         }else{
             alreadyExist = true
         }

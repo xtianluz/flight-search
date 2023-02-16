@@ -1,5 +1,6 @@
 package com.example.flightsearch.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,12 +9,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -24,6 +24,7 @@ import com.example.flightsearch.data.LocalData
 import com.example.flightsearch.navigation.NavigationDestination
 import com.example.flightsearch.ui.AppViewModelProvider
 import com.example.flightsearch.ui.composable.UserSelectedFavoriteList
+import kotlinx.coroutines.launch
 
 object SearchDestination: NavigationDestination{
     override val route = "search_screen"
@@ -36,6 +37,10 @@ fun SearchScreen(
     viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState = viewModel.uiState
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+//    val newUiState by viewModel.newUiState.collectAsState()
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -52,7 +57,19 @@ fun SearchScreen(
             )
             is UiState.Favorite -> UserSelectedFavoriteList(
                 favoriteList = uiState.favoriteList,
-                onClick = { viewModel.removeFromFavorite() }
+                onClick = {
+                    scope.launch {
+                        viewModel.removeFromFavoriteWithQuery(
+                            departureCode = it.departure_code,
+                            destinationCode = it.destination_code,
+                        )
+                        if(viewModel.removedOrNot){
+                            Toast.makeText(context,"Removed Successfully", Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(context,"Error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             )
             else -> Text("Search")
         }

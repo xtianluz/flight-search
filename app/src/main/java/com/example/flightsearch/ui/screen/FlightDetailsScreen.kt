@@ -9,6 +9,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -62,9 +63,9 @@ fun FlightDetailsScreen(
                             id = it.id
                         )
                         if(viewModel.alreadyExist){
-                            Toast.makeText(context,"Already added", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context,"Favorite already exist", Toast.LENGTH_SHORT).show()
                         }else{
-                            Toast.makeText(context,"Added to Favorite", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context,"Added Successfully", Toast.LENGTH_SHORT).show()
                         }
                     }
                 },
@@ -100,7 +101,7 @@ private fun SelectedFlightList(
                         )
                     )
                 },
-                imageVector = Icons.Filled.Add
+                imageVector = Icons.Filled.AddCircle
             )
             Divider(modifier = Modifier.padding(top = 9.dp))
         }

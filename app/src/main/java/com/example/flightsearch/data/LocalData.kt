@@ -34,21 +34,7 @@ object LocalData{
 
     val selectedList: List<SelectedFavorite> = listOf(
         SelectedFavorite(
-            id = 1,
-            departureCode = "BOO",
-            departureName = "FOO",
-            destinationCode = "BOO",
-            destinationName = "FOO"
-        ),
-        SelectedFavorite(
-            id = 2,
-            departureCode = "BOO",
-            departureName = "FOO",
-            destinationCode = "BOO",
-            destinationName = "FOO"
-        ),
-        SelectedFavorite(
-            id = 3,
+            id = 0,
             departureCode = "BOO",
             departureName = "FOO",
             destinationCode = "BOO",
