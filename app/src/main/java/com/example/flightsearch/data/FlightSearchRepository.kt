@@ -1,6 +1,5 @@
 package com.example.flightsearch.data
 
-import kotlinx.coroutines.flow.Flow
 
 interface FlightSearchRepository {
     suspend fun getSearchResult(search: String): List<Airport>

@@ -18,7 +18,6 @@ interface NavigationDestination {
 @Composable
 fun FlightNavHost(
     navController: NavHostController,
-    viewModel: FlightSearchViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     NavHost(
         navController = navController,

@@ -28,7 +28,6 @@ class FlightDetailsViewModel(
             )
         )
     }
-
     private suspend fun findOneFavorite(departureCode: String, destinationCode: String) {
         foundFavorite = flightSearchRepository.findOneFavorite(
             departureCode = departureCode,
@@ -38,13 +37,13 @@ class FlightDetailsViewModel(
     suspend fun addToFavoriteWithQuery(
         departureCode: String,
         destinationCode: String,
-        id: Int
     ) {
         findOneFavorite(
             departureCode = departureCode,
             destinationCode = destinationCode
         )
-        //ignore if statement warning for giving result always false
+        //Just ignore warning, condition always true because of initial value, until fetching data from database
+        //do not lift assignment out of if
         if(foundFavorite == null){
             addToFavorite(
                 departureCode = departureCode,

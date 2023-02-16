@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -60,7 +59,6 @@ fun FlightDetailsScreen(
                         viewModel.addToFavoriteWithQuery(
                             departureCode = it.departure_code,
                             destinationCode = it.destination_code,
-                            id = it.id
                         )
                         if(viewModel.alreadyExist){
                             Toast.makeText(context,"Favorite already exist", Toast.LENGTH_SHORT).show()
