@@ -41,8 +41,13 @@ class FlightSearchViewModel(
         viewModelScope.launch {
             userPreferencesRepository.getSavedUserInput().collect {
                 userInput = it
-                flightList = flightSearchRepository.getSearchResult(userInput)
-                uiState = UiState.Result(flightList)
+                if(userInput.isNotBlank()){
+                    flightList = flightSearchRepository.getSearchResult(userInput)
+                    uiState = UiState.Result(flightList)
+                }else{
+                    selectedFavoriteList.clear()
+                    launchFavorite()
+                }
             }
         }
     }
@@ -88,11 +93,13 @@ class FlightSearchViewModel(
 
     fun updateUserInput(newUserInput: String) {
         userInput = newUserInput
-
+        viewModelScope.launch {
+            saveUserInput(userInput)
+        }
         if (userInput.isNotBlank()) {
             viewModelScope.launch {
                 searchResult()
-                saveUserInput(userInput)
+
             }
         } else if (userInput == "") {
             selectedFavoriteList.clear()
