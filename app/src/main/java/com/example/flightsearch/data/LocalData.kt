@@ -53,4 +53,5 @@ object LocalData{
         destinationName = "FOO",
         departureName = "FOO"
     )
+    val nullFavorite: Favorite = Favorite(id=1, destination_code = "", departure_code = "")
 }

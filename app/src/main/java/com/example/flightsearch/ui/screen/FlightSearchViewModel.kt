@@ -58,21 +58,25 @@ class FlightSearchViewModel(
     private fun launchFavorite() {
         viewModelScope.launch {
             favoriteCodeList = flightSearchRepository.getAllFavorites()
-            favoriteCodeList.forEach {
-                departureFlight = flightSearchRepository.getDepartureFlight(it.departure_code)
-                destinationFlight = flightSearchRepository.getDepartureFlight(it.destination_code)
-                selectedFavoriteList.add(
-                    SelectedFavorite(
-                        id = it.id + (0..1000).random(),
-                        departureCode = departureFlight.iata_code,
-                        departureName = departureFlight.name,
-                        destinationCode = destinationFlight.iata_code,
-                        destinationName = destinationFlight.name
+            if(favoriteCodeList.isEmpty()){
+                uiState = UiState.Default
+            }else{
+                favoriteCodeList.forEach {
+                    departureFlight = flightSearchRepository.getDepartureFlight(it.departure_code)
+                    destinationFlight = flightSearchRepository.getDepartureFlight(it.destination_code)
+                    selectedFavoriteList.add(
+                        SelectedFavorite(
+                            id = it.id + (0..1000).random(),
+                            departureCode = departureFlight.iata_code,
+                            departureName = departureFlight.name,
+                            destinationCode = destinationFlight.iata_code,
+                            destinationName = destinationFlight.name
+                        )
                     )
-                )
+                }
+                selectedFavoriteList.remove(LocalData.selectedFavorite)
+                uiState = UiState.Favorite(selectedFavoriteList)
             }
-            selectedFavoriteList.remove(LocalData.selectedFavorite)
-            uiState = UiState.Favorite(selectedFavoriteList)
         }
     }
 
@@ -99,9 +103,8 @@ class FlightSearchViewModel(
         if (userInput.isNotBlank()) {
             viewModelScope.launch {
                 searchResult()
-
             }
-        } else if (userInput == "") {
+        } else if (userInput.isEmpty()) {
             selectedFavoriteList.clear()
             launchFavorite()
         } else {
