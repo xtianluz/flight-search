@@ -6,4 +6,5 @@
     <string name="favourite">Favourite</string>
     <string name="flight_details">Flight Details</string>
     <string name="flight_label">flight label</string>
+    <string name="your_favorites">Your Favorites</string>
 </resources>
