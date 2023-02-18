@@ -83,11 +83,6 @@ class FlightSearchViewModel(
     private suspend fun saveUserInput(userInput: String) {
         userPreferencesRepository.saveUserInputPreferences(userInput)
     }
-    private suspend fun getSavedUserData() {
-        userPreferencesRepository.getSavedUserInput().collect {
-            userInput = it
-        }
-    }
     private suspend fun searchResult() {
         flightList = getSearchResult()
         uiState = UiState.Result(flightList)
@@ -104,15 +99,9 @@ class FlightSearchViewModel(
             viewModelScope.launch {
                 searchResult()
             }
-        } else if (userInput.isEmpty()) {
-            selectedFavoriteList.clear()
-            launchFavorite()
-        } else {
+        }else {
             uiState = UiState.Default
         }
-    }
-    fun clearUserInput() {
-        userInput = ""
     }
     suspend fun removeFromFavoriteWithQuery(
         departureCode: String,
